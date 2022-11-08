@@ -6,6 +6,8 @@ from transformers import BertTokenizer, BertForSequenceClassification
 
 from airtable import airtable
 at = airtable.Airtable(base_id="app79jWz6TxEcG2wS", api_key="keybU4zrEHL8G7FV4", table_name="predictions")
+
+st.cache(allow_output_mutation=True)
 def get_model():
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
     model = BertForSequenceClassification.from_pretrained("panditamey1/bert_toxic_10_eps")
@@ -26,4 +28,4 @@ if user_input and button:
     y_pred = np.argmax(output.logits.detach().numpy(), axis = 1)
     st.write("Prediction: ",d[y_pred[0]])
 
-    at.insert( {"user_input" : user_input, "predictions": d[y_pred[0]] } )
+    at.insert( {"user_input" : user_input, "prediction": d[y_pred[0]] } )
